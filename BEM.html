@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <meta charset="utf-8">
+    <title>Thực hành xây dựng theo chuẩn BEM</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./BEM.css">
+</header>
+
+<body>
+    <div>
+        <button class="btn btn--success">
+            Go to next
+        </button>
+        <button class="btn btn--war">
+            Try again
+        </button>
+        <button class="btn btn--error">
+            OK
+        </button>
+    </div>
+    <div>
+        <button class="btn btn--success">
+            Go to next
+        </button>
+        <button class="btn btn--war">
+            Try again
+        </button>
+        <button class="btn btn--error btn--disable">
+            OK
+        </button>
+    </div>
+    <div>
+        <button onclick="ShowToastSuccess();" class="btn btn--success btn-size-l">
+            Go to next
+        </button>
+        <button onclick="toastinfo();" class="btn btn--war">
+            Try again
+        </button>
+        <button  onclick="toasterror();" class="btn btn--error btn-size-s">
+            OK
+        </button>
+    </div>
+
+    <!-- Toast message -->
+    <!-- Success -->
+    <div id="toast">
+        
+    </div>
+    <script>
+        function toast({
+            title = '',
+            mesage = '',
+            type = 'info',
+            duration = 3000
+        }) {
+            const main = document.getElementById('toast');
+            if (main) {
+                const toast = document.createElement('div');
+                //auto remove
+                const AutoRemove = setTimeout(function(){
+                    main.removeChild(toast)
+                },duration + 1000)
+                // remove khi ấn close
+                toast.onclick = function(e){
+                    if(e.target.closest('.toast__close')){
+                        main.removeChild(toast);
+                        clearTimeout(AutoRemove);
+                    }
+                }
+                toast.classList.add('toast', `toast--${type}`);
+                toast.style.animation = `slideToast ease-in 0.5s, outline linear 1s ${duration}ms forwards`;
+                toast.innerHTML = `
+                <div class="toast__icon"><i class="fas fa-check-circle"></i></div>
+                <div class="toast__body">
+                <h3 class="toast__title">${title}</h3>
+                <p class="toast__content">${mesage}</p>
+                </div>
+                <div class="toast__close"><i class="fas fa-times"></i></div>`;
+                main.append(toast);
+               
+            }
+        }
+        function ShowToastSuccess(){
+            toast({
+            title : 'Success',
+            mesage : 'Bạn đã đăng ký thành công tài khoản tại F8.',
+            type : 'success',
+            duration : 5000
+        });
+        }
+        function toasterror(){
+            toast({
+            title : 'Error',
+            mesage : 'Đã xảy ra lỗi, vui lòng liên hệ quản trị viên',
+            type : 'error',
+            duration : 5000
+        });
+        }
+        
+    </script>
+</body>
+
+</html>
